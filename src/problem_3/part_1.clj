@@ -1,5 +1,6 @@
 (ns problem-3.part-1
-  (:require [core :as core]))
+  (:require [core :as core]
+            [clj-memory-meter.core :as mm]))
 
 ;; Problem - 3 Part - 1
 ;;https://adventofcode.com/2021/day/3
@@ -54,9 +55,9 @@
   (let [count-struct (-> bits-seq
                          count-ones)
         gamma (bits->number (gamma-rate count-struct))
-        #_ (println "Gamma" gamma)
+        #_(println "Gamma" gamma)
         alpha (bits->number (alpha-rate count-struct))
-        #_ (println "Alpha" alpha)]
+        #_(println "Alpha" alpha)]
     (* gamma alpha)))
 
 ;; ----------- Answer ----------------
@@ -65,3 +66,11 @@
   (-> "inputs/problem_3.txt"
       parse-input
       solution-part-1))
+
+;; ------------ Performance analysis ! ----------------
+(time (-> "inputs/problem_3.txt"
+          parse-input
+          solution-part-1))
+(mm/measure (-> "inputs/problem_3.txt"
+                parse-input
+                solution-part-1))
