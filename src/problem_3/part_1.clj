@@ -68,9 +68,12 @@
       solution-part-1))
 
 ;; ------------ Performance analysis ! ----------------
-(time (-> "inputs/problem_3.txt"
+
+;;"Elapsed time: 2.009875 msecs"
+#_(time (-> "inputs/problem_3.txt"
           parse-input
           solution-part-1))
-(mm/measure (-> "inputs/problem_3.txt"
+;;"24 B"
+#_(mm/measure (-> "inputs/problem_3.txt"
                 parse-input
                 solution-part-1))
