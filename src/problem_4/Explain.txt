@@ -1,0 +1,23 @@
+Breaking down the problem statement into functional chunks to get an idea
+how to solve the problem.
+
+The problem statement is about Bingo
+
+Pseudocode in plain english
+---
+
+Parsing
+-------
+First store the entire1st line as a seq : input
+From 3rd line take batches of input of line size as 5 in a 2D vector
+Store all of the array in another sequence
+
+
+Solution
+--------
+For every input mentioned separated using commas, mark all the boards.
+With every mark check if it has a bingo?
+It will continue marking and checking for bingo every input.
+Once a bingo happens, stop checking for the next inputs.
+Add the numbers which are not marked, and multiply with the number for input.
+Return the result.
