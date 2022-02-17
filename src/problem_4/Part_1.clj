@@ -102,18 +102,18 @@
     nil))
 
 ;; -------- Answer ------------
-(-> "inputs/problem_4.txt"
+#_(-> "inputs/problem_4.txt"
     parse
     solution-part-1)
 
 ;; -------- Performace --------
 
 ;;"Elapsed time: 41.080292 msecs"
-(time (-> "inputs/problem_4.txt"
+#_(time (-> "inputs/problem_4.txt"
           parse
           solution-part-1))
 
 ;;24 Bytes
-(mm/measure (-> "inputs/problem_4.txt"
+#_(mm/measure (-> "inputs/problem_4.txt"
                 parse
                 solution-part-1))
