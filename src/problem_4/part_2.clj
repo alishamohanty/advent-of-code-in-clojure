@@ -65,9 +65,8 @@
                           (if (and (str/includes? elem ".")
                                    (not (find-elem elem aft-list)))
                             accum
-                            (+ accum (Integer/parseInt (clean elem)))))
-        _ (reduce add-marked-elem 0 (flatten board))]
-    ))
+                            (+ accum (Integer/parseInt (clean elem)))))]
+    (reduce add-marked-elem 0 (flatten board))))
 
 ;;it takes boards and idx, when bingo is found, return idx
 (defn check-bingo?
@@ -111,24 +110,28 @@
      :itr input}))
 
 (defn already-checked-bingo? [bingo-infos recent-bingo-info]
-  (some #(= (:board-idx %) (:board-idx recent-bingo-info)) bingo-infos))
+  (let [#_ (println "already-checked-bingo? :-" (some #(= (:board-idx %) (:board-idx recent-bingo-info)) bingo-infos))]
+    (some #(= (:board-idx %) (:board-idx recent-bingo-info)) bingo-infos)))
 
-(defn check-already-bingo?
-  ([boards bingo-infos] (check-already-bingo? boards bingo-infos 0))
-  ([boards bingo-infos idx]
-   (if-let [board (nth boards idx nil)]
+(defn get-new-bingo
+  ([boards bingo-infos bingos] (get-new-bingo boards bingo-infos bingos 0))
+  ([boards bingo-infos bingos idx]
+   (let [_ (println idx)]
+     (if-let [board (nth boards idx nil)]
      (if-let [recent-bingo-info (bingo? board)]
-       (if (already-checked-bingo? bingo-infos (assoc recent-bingo-info :board-idx idx))
-         (check-already-bingo? boards bingo-infos (inc idx))
-         (assoc recent-bingo-info :board-idx idx))
-       (check-already-bingo? boards bingo-infos (inc idx)))
-     (last bingo-infos))))
+       (let [_(println "recent-bingo-info" recent-bingo-info)]
+         (if (already-checked-bingo? bingo-infos (assoc recent-bingo-info :board-idx idx))
+           (get-new-bingo boards bingo-infos (inc idx))
+           (do (println "hello")
+               (get-new-bingo boards bingo-infos (conj bingos (assoc recent-bingo-info :board-idx idx)) (inc idx)))))
+       (get-new-bingo boards bingo-infos (inc idx)))
+     bingos))))
 
 
 (defn not-already? [old-bingo-infos recent-bingo-info]
   (when recent-bingo-info
     (let [recent-bingo-idx (:board-idx recent-bingo-info)
-          already-board-bingo? (some #(= (:board-idx %) recent-bingo-idx) old-bingo-infos)
+          already-board-bingo? (some #(= (:board-idx %) (:board-dx recent-bingo-idx)) old-bingo-infos)
           already-bingo-inserted? (some #(= (select-keys % [:row-col :board-idx]) (select-keys recent-bingo-info [:row-col :board-idx])) old-bingo-infos)]
       (if (or already-bingo-inserted? already-board-bingo?)
       false
@@ -142,18 +145,20 @@
           bingo-infos (or (:bingo-infos board-struct) [])
           #_ (println "this is marked board" marked-boards)
           #_ (println "result of check-bingo" (check-bingo? marked-boards))
-          recent-bingo-info (check-already-bingo? marked-boards bingo-infos) ;;{:row-col ["11." "14." "17."], :idx 1}
-          is-new-bingo-info? (not-already? bingo-infos recent-bingo-info)
+          #_recent-bingo-info #_(check-already-bingo? marked-boards bingo-infos) ;;{:row-col ["11." "14." "17."], :idx 1}
+          #_is-new-bingo-info? #_(not-already? bingo-infos recent-bingo-info)
           #_(println "bingo-board-idx" bingo-board-idx)
           #_(println "bingo-infos" bingo-infos)
           #_(println "recent bingo info" recent-bingo-info)
-          #_ (println "is new bingo info" is-new-bingo-info?)]
-      (if is-new-bingo-info?
+          #_ (println "is new bingo info" is-new-bingo-info?)
+          new_bingo_info (get-new-bingo marked-boards bingo-infos [])
+          _ (println "value of new bingo info" new_bingo_info)]
+      (if new_bingo_info
         (solution-part-2-wraper (assoc board-struct
                                        :itr (rest itr)
                                        :boards marked-boards
                                        :bingo-infos (conj bingo-infos
-                                                         (assoc recent-bingo-info
+                                                         (assoc new_bingo_info
                                                                 :num num))))
         (solution-part-2-wraper (assoc board-struct
                                        :itr (rest itr)
@@ -170,16 +175,17 @@
         to-be-unmarked-vec (subvec input (inc (.indexOf
                                                input
                                                num)))
-        _ (println "unmark vec "to-be-unmarked-vec)
-        _ (println (nth boards (:board-idx last-bingo-infos)))
-        sum (sum-unmarked-nums last-bingo-board to-be-unmarked-vec)]
+        #_ (println "unmark vec "to-be-unmarked-vec)
+        #_ (println (nth boards (:board-idx last-bingo-infos)))
+        sum (sum-unmarked-nums last-bingo-board to-be-unmarked-vec)
+        #_ (println "sum:- " sum, last-bingo-board, to-be-unmarked-vec )]
     (* sum (Integer/parseInt num))))
 
 
 ;; -------- Answer ------------
 (-> "inputs/problem_4.txt"
     parse
-    solution-part-2-wraper
-    solution-part-2)
+    solution-part-2-wraper)
+    
 
 ;; -------- Performace --------
