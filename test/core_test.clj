@@ -6,6 +6,7 @@
             [problem-3.part-2 :as prob-3-part-2]
             [problem-4.part-1 :as prob-4-part-1]
             [problem-4.part-2 :as prob-4-part-2]
+            [problem-5.part-1 :as prob-5-part-1]
             [clojure.test :refer [testing deftest is]]))
 
 (deftest problem-1
@@ -109,3 +110,12 @@
                   :itr ["7" "4" "9" "5" "11" "17" "23" "2" "0" "14"
                         "21" "24" "10" "16" "13" "6" "15" "25"
                         "12" "22" "18" "20" "8" "19" "3" "26" "1"]})))))
+(deftest problem-5
+  (testing "Testing problem 1 part - 1"
+    (is (= 5 (prob-5-part-1/solution-part-1
+              [[[0 9] [5 9]]
+               [[9 4] [3 4]]
+               [[2 2] [2 1]]
+               [[7 0] [7 4]]
+               [[0 9] [2 9]]
+               [[3 4] [1 4]]])))))
