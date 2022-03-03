@@ -1,5 +1,6 @@
 (ns problem-6.part-1
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clj-memory-meter.core :as mm]))
 
 (defn add-8 [ip _]
   (conj ip 8))
@@ -59,3 +60,17 @@
       read-input
       parse-input
       solution))
+
+;; -------- Performace --------
+
+;;"Elapsed time: 21.93 msecs"
+(time (-> "inputs/problem_6.txt"
+          read-input
+          parse-input
+          solution))
+
+;;24 B
+(mm/measure (-> "inputs/problem_6.txt"
+                read-input
+                parse-input
+                solution))
