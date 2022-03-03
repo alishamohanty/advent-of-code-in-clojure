@@ -8,6 +8,8 @@
             [problem-4.part-2 :as prob-4-part-2]
             [problem-5.part-1 :as prob-5-part-1]
             [problem-5.part-2 :as prob-5-part-2]
+            [problem-6.part-1 :as prob-6-part-1]
+            [problem-6.part-2 :as prob-6-part-2]
             [clojure.test :refer [testing deftest is]]))
 
 (deftest problem-1
@@ -136,3 +138,11 @@
                [[3 4] [1 4]]
                [[0 0] [8 8]]
                [[5 5] [8 2]]])))))
+
+(deftest problem-6
+  (testing "Testing problem 1 part - 1"
+    (is (= 5934 (prob-6-part-1/solution
+              [3 4 3 1 2]))))
+  (testing "Testing problem 1 part - 2"
+    (is (= 26984457539 (prob-6-part-2/solution
+              [3 4 3 1 2])))))
